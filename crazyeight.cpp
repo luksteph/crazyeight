@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <algorithm>
 #include <string>
+#include <queue>
 #include "Card.hpp"
 #include "Pack.hpp"
 #include "Player.hpp"
@@ -18,12 +19,16 @@ public:
     void play();
 private:
     vector<Player*> players;
+    queue<Card> stack;
     Pack pack;
     bool do_shuffle;
+    bool play_clockwise;
+    Card *top_card;
+    class outOfCardsException{};
 
     void deal();
     void play_hand();
-    void play_round();
+    void play_round(Player *current_player);
     void cleanup(); 
 };
 
@@ -45,7 +50,14 @@ int main(int argc, char *argv[]) {
 
     Game game(argv, pack_in);
     
-    game.play();
+    char a = 'Y';
+    while (a == 'Y' || a =='y') {
+        game.play();
+        cout << "Would you like to play a new game? [Y/N]: ";
+        cin >> a;
+    }
+    
+    cout << "Thanks for playing!";
     pack_in.close();
 }
 
@@ -66,7 +78,7 @@ void verify_input(int argc, char* argv[]) {
 }
 
 Game::Game(char* arguments[], istream& pack_in) { 
-    Pack pack(pack_in);
+    Pack pack(pack_in); play_clockwise = true;
     
     if (strcmp(arguments[2], "shuffle") == 0) do_shuffle = true;
     else do_shuffle = false;
@@ -79,31 +91,50 @@ Game::Game(char* arguments[], istream& pack_in) {
 }
 
 void Game::play() {
-    // Run hands until winning score is reached
-    
+    // Deal cards
+    deal();
+
+    bool still_going = true;
+    int cards_played(0), current_p_index = 0;
+
+    while (still_going) {
+        try {
+            play_round(players[current_p_index]);
+            if (play_clockwise) current_p_index = (current_p_index + 1) % 4;
+            else current_p_index = (current_p_index - 1) % 4; // will break on reverse
+        }
+        catch (outOfCardsException &e) {
+            still_going = false;
+        }
+        cards_played++;
+    }
+
     // delete player objects
     cleanup();
+}
+
+void Game::play_round(Player *p) { // rename to reflect player turn
+    top_card = &p->play_card(*top_card);
+    cout << *top_card << " played!" << endl;
+    if (p->hand_empty()) throw new outOfCardsException;
 }
 
 void Game::play_hand() {
     
 }
 
-void Game::play_round() {
-    
-}
-
-// MODIFIES player hands
+// MODIFIES player hands, card "stack"
 // EFFECTS deals the cards, one to each player until everyone has 7
 void Game::deal() {
-    // setup
+    for (size_t i = 0; i <=7; ++i) {
+        for (auto p : players) p->add_card(pack.deal_one());
+    }
+    top_card = &pack.deal_one();
+    while (!pack.empty()) {
+        stack.push(pack.deal_one());
+    }
 
-    // impl
-
-    
 }
-
-
 
 // MODIFIES player vector, all of them get deleted
 // EFFECTS deletes players

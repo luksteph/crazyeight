@@ -10,7 +10,6 @@
 
 class SimplePlayer : public Player {
     private:
-    static const int MAX_HAND_SIZE = 5;
     std::string name;
     std::vector<Card> hand;
 
@@ -21,25 +20,30 @@ class SimplePlayer : public Player {
 
     void add_card(const Card &c) override;
 
-    Card play_card(const Card &led_card, Suit trump) override;
+    Card play_card(const Card & upcard) override;
     
+    bool hand_empty() const override;
 };
 
 const std::string & SimplePlayer::get_name() const {
     return name;
 }
+
 void SimplePlayer::add_card(const Card &c) {
     hand.push_back(c);
 }
 
-Card SimplePlayer::play_card(const Card &led_card, Suit trump) {
+Card SimplePlayer::play_card(const Card & upcard) {
 
+}
+
+bool SimplePlayer::hand_empty() const {
+    return hand.empty();
 }
 
 
 class HumanPlayer : public Player {
 private:
-    static const int MAX_HAND_SIZE = 5;
     std::string name;
     std::vector<Card> hand;
 
@@ -50,7 +54,9 @@ public:
 
     void add_card(const Card &c) override;
 
-    Card play_card(const Card &led_card, Suit trump) override;
+    Card play_card(const Card & upcard) override;
+
+    bool hand_empty() const override;
 
     void print_hand() const;
 };
@@ -58,19 +64,24 @@ public:
 const std::string & HumanPlayer::get_name() const {
     return name;
 }
+
 void HumanPlayer::add_card(const Card &c) {
     hand.push_back(c);
     std::sort(hand.begin(), hand.end());
 }
 
-Card HumanPlayer::play_card(const Card &led_card, Suit trump) {
-    int card_index(0); Card chosen_one;
+Card HumanPlayer::play_card(const Card & upcard) {
+    int card_index(0); Card *chosen_one;
     print_hand();
     std::cout << "Human player " << name << ", please select a card:\n";
     std::cin >> card_index;
-    chosen_one = hand[card_index];
+    chosen_one = &hand[card_index];
     hand.erase(hand.begin() + card_index);
-    return chosen_one;
+    return *chosen_one;
+}
+
+bool HumanPlayer::hand_empty() const {
+    return hand.empty();
 }
 
 void HumanPlayer::print_hand() const {

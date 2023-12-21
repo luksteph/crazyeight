@@ -19,17 +19,15 @@ class Player {
   //EFFECTS returns player's name
   virtual const std::string & get_name() const = 0;
 
-  //REQUIRES player has less than MAX_HAND_SIZE cards
   //EFFECTS  adds Card c to Player's hand
   virtual void add_card(const Card &c) = 0;
 
   //REQUIRES Player has at least one card
   //EFFECTS  Plays one Card from Player's hand according to their strategy.
   //  The card is removed from the player's hand.
-  virtual Card play_card(const Card &led_card, Suit trump) = 0;
+  virtual Card play_card(const Card & upcard) = 0;
 
-  // Maximum number of cards in a player's hand
-  static const int MAX_HAND_SIZE = 5;
+  virtual bool hand_empty() const = 0;
 
   // Needed to avoid some compiler errors
   virtual ~Player() {}
