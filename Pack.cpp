@@ -71,5 +71,5 @@ void Pack::shuffle() {
 
   // EFFECTS: returns true if there are no more cards left in the pack
 bool Pack::empty() const {
-    return (next >= 54);
+    return (next >= 52);
 }

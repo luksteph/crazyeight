@@ -84,7 +84,7 @@ Game::Game(char* arguments[], istream& pack_in) {
 
     for (int i = 0; i < 4; ++i) {
         players.push_back(Player_factory(
-            arguments[(2 * i + 4)], arguments[(2 * i + 5)]));
+            arguments[(2 * i + 3)], arguments[(2 * i + 4)]));
     }
 
 }
