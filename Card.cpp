@@ -53,10 +53,10 @@ std::istream & operator>>(std::istream &is, Rank &rank) {
 /////////////// Suit operator implementations - DO NOT CHANGE ///////////////
 
 constexpr const char *const SUIT_NAMES[] = {
-  "Spades",   // SPADES
-  "Hearts",   // HEARTS
-  "Clubs",    // CLUBS
-  "Diamonds", // DIAMONDS
+  "Red",   // SPADES
+  "Yellow",   // HEARTS
+  "Green",    // CLUBS
+  "Blue", // DIAMONDS
 };
 
 //REQUIRES str represents a valid suit ("Spades", "Hearts", "Clubs", or "Diamonds")
@@ -186,7 +186,7 @@ bool operator!=(const Card &lhs, const Card &rhs) {
 //EFFECTS Returns true if a is lower value than b.  Uses both the trump suit
 //  and the suit led to determine order, as described in the spec.
 bool Card_less(const Card &a, const Card &b, const Card &led_card, Suit trump){
-  
+  return false;
 }
 
 

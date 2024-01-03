@@ -55,13 +55,13 @@ void Pack::shuffle() {
     std::array<Card, (PACK_SIZE/2)> first_half;
     std::array<Card, (PACK_SIZE/2)> second_half;
     while (shuffle_count < 7) {
-        for (int i(0); i < 12; ++i) {
+        for (int i(0); i < 12; ++i) { // fix me
             first_half.at(i) = cards.at(i);
         }
-        for (int i(12); i < 24; ++i) {
+        for (int i(12); i < 24; ++i) { // fix me
             second_half.at(i-12) = cards.at(i);
         }
-        for (int i(0); i < 12; ++i) {
+        for (int i(0); i < 12; ++i) { // fix me
             cards.at(2*i) = second_half.at(i);
             cards.at(1+(2*i)) = first_half.at(i);
         }

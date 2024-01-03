@@ -63,14 +63,13 @@ int main(int argc, char *argv[]) {
 
 void verify_input(int argc, char* argv[]) {
     if (argc != 11 || 
-        atoi(argv[3]) > 100 || atoi(argv[3]) < 1 || 
         (strcmp(argv[2], "shuffle") && strcmp(argv[2], "noshuffle")) || 
-        (strcmp(argv[5], "Simple") && strcmp(argv[5], "Human")) ||
-        (strcmp(argv[7], "Simple") && strcmp(argv[7], "Human")) ||
-        (strcmp(argv[9], "Simple") && strcmp(argv[9], "Human")) ||
-        (strcmp(argv[11], "Simple") && strcmp(argv[11], "Human"))
+        (strcmp(argv[4], "Simple") && strcmp(argv[4], "Human")) ||
+        (strcmp(argv[6], "Simple") && strcmp(argv[6], "Human")) ||
+        (strcmp(argv[8], "Simple") && strcmp(argv[8], "Human")) ||
+        (strcmp(argv[10], "Simple") && strcmp(argv[10], "Human"))
         ) {
-    cout << "Usage: crazyeight.exe PACK_FILENAME [shuffle|noshuffle] "
+    cout << "Usage: ./crazyeight.exe PACK_FILENAME [shuffle|noshuffle]"
      << " NAME1 TYPE1 NAME2 TYPE2 NAME3 TYPE3 "
      << "NAME4 TYPE4" << endl;
      exit(1);
@@ -114,7 +113,8 @@ void Game::play() {
 }
 
 void Game::play_round(Player *p) { // rename to reflect player turn
-    top_card = &p->play_card(*top_card);
+    auto tc_temp = p->play_card(*top_card);
+    top_card = &tc_temp;
     cout << *top_card << " played!" << endl;
     if (p->hand_empty()) throw new outOfCardsException;
 }
@@ -129,7 +129,8 @@ void Game::deal() {
     for (size_t i = 0; i <=7; ++i) {
         for (auto p : players) p->add_card(pack.deal_one());
     }
-    top_card = &pack.deal_one();
+    auto tc_temp = pack.deal_one();
+    top_card = &tc_temp;
     while (!pack.empty()) {
         stack.push(pack.deal_one());
     }

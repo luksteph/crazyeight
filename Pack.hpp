@@ -45,7 +45,7 @@ public:
   bool empty() const;
 
 private:
-  static const int PACK_SIZE = 24;
+  static const int PACK_SIZE = 52;
   std::array<Card, PACK_SIZE> cards;
   int next; //index of next card to be dealt
 };

@@ -34,7 +34,7 @@ void SimplePlayer::add_card(const Card &c) {
 }
 
 Card SimplePlayer::play_card(const Card & upcard) {
-
+  return hand[0];
 }
 
 bool SimplePlayer::hand_empty() const {
