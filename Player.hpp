@@ -29,6 +29,8 @@ class Player {
 
   virtual bool hand_empty() const = 0;
 
+  virtual bool has_playable_cards(const Card &upcard) const = 0;
+
   // Needed to avoid some compiler errors
   virtual ~Player() {}
 };

@@ -23,14 +23,16 @@ class SimplePlayer : public Player {
     Card play_card(const Card & upcard) override;
     
     bool hand_empty() const override;
+
+    bool has_playable_cards(const Card & upcard) const override;
 };
 
 const std::string & SimplePlayer::get_name() const {
-    return name;
+  return name;
 }
 
 void SimplePlayer::add_card(const Card &c) {
-    hand.push_back(c);
+  hand.push_back(c);
 }
 
 Card SimplePlayer::play_card(const Card & upcard) {
@@ -38,7 +40,10 @@ Card SimplePlayer::play_card(const Card & upcard) {
 }
 
 bool SimplePlayer::hand_empty() const {
-    return hand.empty();
+  return hand.empty();
+}
+bool SimplePlayer::has_playable_cards(const Card & upcard) const {
+  return !hand.empty();
 }
 
 
@@ -58,6 +63,8 @@ public:
 
     bool hand_empty() const override;
 
+    bool has_playable_cards(const Card & upcard) const override;
+
     void print_hand() const;
 };
 
@@ -71,17 +78,21 @@ void HumanPlayer::add_card(const Card &c) {
 }
 
 Card HumanPlayer::play_card(const Card & upcard) {
-    int card_index(0); Card *chosen_one;
-    print_hand();
-    std::cout << "Human player " << name << ", please select a card:\n";
-    std::cin >> card_index;
-    chosen_one = &hand[card_index];
-    hand.erase(hand.begin() + card_index);
-    return *chosen_one;
+  int card_index(0); Card *chosen_one;
+  print_hand();
+  std::cout << "Human player " << name << ", please select a card:\n";
+  std::cin >> card_index;
+  chosen_one = &hand[card_index];
+  hand.erase(hand.begin() + card_index);
+  return *chosen_one;
 }
 
 bool HumanPlayer::hand_empty() const {
-    return hand.empty();
+  return hand.empty();
+}
+
+bool HumanPlayer::has_playable_cards(const Card & upcard) const {
+  return !hand.empty();
 }
 
 void HumanPlayer::print_hand() const {
